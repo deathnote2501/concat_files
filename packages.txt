@@ -1,2 +1,2 @@
-libreoffice # LibreOffice for DOC, DOCX, PPT, PPTX support
-poppler-utils # Poppler for PDF to text conversion
+libreoffice
+poppler-utils
