@@ -39,14 +39,12 @@ def save_concatenated_file(content):
 
 def main():
     st.title("Création base de connaissances pour les GPTs")
-    st.subheader("Par Jérome IAvarone")
+    st.write("Par Jérome IAvarone")
     st.write("")
     st.write("")
-    st.subheader("Chargez vos fichiers")
+    st.subheader("Chargez vos fichiers :")
 
     uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
-
-    st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
     
     if st.button("Créer sa base de connaissances"):
         if not uploaded_files:
@@ -78,6 +76,10 @@ def main():
                 b64 = base64.b64encode(f.read()).decode()
                 href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt">Télécharger vos fichiers concaténés</a>'
                 st.markdown(href, unsafe_allow_html=True)
+
+    st.write("")
+    st.write("")
+    st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
 
 if __name__ == "__main__":
     main()
