@@ -7,6 +7,9 @@ from pptx import Presentation
 import tempfile
 import base64
 
+# Define the password
+PASSWORD = "your_password_here"
+
 def read_pdf(file):
     content = ""
     with pdfplumber.open(file) as pdf:
@@ -40,49 +43,55 @@ def save_concatenated_file(content):
 def main():
     st.title("Création base de connaissances pour les GPTs")
     st.write("Par Jérome IAvarone")
-    st.write("")
-    st.write("")
-    st.subheader("Chargez vos fichiers :")
 
-    uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
-    
-    if st.button("Créer sa base de connaissances"):
-        if not uploaded_files:
-            st.warning("Chargez au moins 2 fichiers.")
-        else:
-            all_content = ""
-            for uploaded_file in uploaded_files:
-                file_name = uploaded_file.name
-                file_extension = os.path.splitext(file_name)[1].lower()
-                if file_extension == ".pdf":
-                    file_content = read_pdf(uploaded_file)
-                elif file_extension in [".doc", ".docx"]:
-                    file_content = read_docx(uploaded_file)
-                elif file_extension == ".txt":
-                    file_content = read_txt(uploaded_file)
-                elif file_extension in [".ppt", ".pptx"]:
-                    file_content = read_pptx(uploaded_file)
-                else:
-                    file_content = ""
-                
-                all_content += f"--------------------------- BEGIN {file_name} ---------------------------\n"
-                all_content += file_content
-                all_content += f"\n--------------------------- END {file_name} ---------------------------\n\n"
+    # Password input
+    password = st.text_input("Entrez le mot de passe :", type="password")
 
-            concatenated_file_path = save_concatenated_file(all_content)
-            st.write("\n")
-            st.success("Traitement réalisé avec succès :)")
-            st.write("\n")
+    if password == PASSWORD:
+        st.write("")
+        st.subheader("Chargez vos fichiers :")
 
-            with open(concatenated_file_path, 'rb') as f:
-                b64 = base64.b64encode(f.read()).decode()
-                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt" style="font-size:20px;">>> Télécharger sa base de connaissances</a>'
-                st.markdown(href, unsafe_allow_html=True)
+        uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
+        
+        if st.button("Créer sa base de connaissances"):
+            if not uploaded_files:
+                st.warning("Chargez au moins 2 fichiers.")
+            else:
+                all_content = ""
+                for uploaded_file in uploaded_files:
+                    file_name = uploaded_file.name
+                    file_extension = os.path.splitext(file_name)[1].lower()
+                    if file_extension == ".pdf":
+                        file_content = read_pdf(uploaded_file)
+                    elif file_extension in [".doc", ".docx"]:
+                        file_content = read_docx(uploaded_file)
+                    elif file_extension == ".txt":
+                        file_content = read_txt(uploaded_file)
+                    elif file_extension in [".ppt", ".pptx"]:
+                        file_content = read_pptx(uploaded_file)
+                    else:
+                        file_content = ""
+                    
+                    all_content += f"--------------------------- BEGIN {file_name} ---------------------------\n"
+                    all_content += file_content
+                    all_content += f"\n--------------------------- END {file_name} ---------------------------\n\n"
 
-    st.write("")
-    st.write("")
-    st.write("")
-    st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
+                concatenated_file_path = save_concatenated_file(all_content)
+                st.write("\n")
+                st.success("Traitement réalisé avec succès :)")
+                st.write("\n")
+
+                with open(concatenated_file_path, 'rb') as f:
+                    b64 = base64.b64encode(f.read()).decode()
+                    href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt" style="font-size:20px;">>> Télécharger sa base de connaissances</a>'
+                    st.markdown(href, unsafe_allow_html=True)
+
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
+    elif password:
+        st.error("Mot de passe incorrect")
 
 if __name__ == "__main__":
     main()
