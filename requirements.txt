@@ -1,5 +1,5 @@
 streamlit
-pdfplumber
 python-docx
+PyPDF2
 python-pptx
-reportlab
+pdfplumber
