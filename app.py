@@ -38,16 +38,17 @@ def save_concatenated_file(content):
     return temp_file.name
 
 def main():
-    st.title("Création base de connaissances GPTs")
-    st.subheader("Jérome IAvarone (jerome.iavarone@gmail.com)")
+    st.title("Création base de connaissances pour les GPTs")
+    st.subheader("Par Jérome IAvarone")
+    st.write("")
     st.write("")
     st.subheader("Chargez vos fichiers ci-dessous")
 
     uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
     
-    if st.button("Concatenate Files"):
+    if st.button("Créer sa base de connaissances"):
         if not uploaded_files:
-            st.warning("Please upload at least one file.")
+            st.warning("Chargez au moins 2 fichiers.")
         else:
             all_content = ""
             for uploaded_file in uploaded_files:
@@ -69,11 +70,11 @@ def main():
                 all_content += f"\n--------------------------- END {file_name} ---------------------------\n\n"
 
             concatenated_file_path = save_concatenated_file(all_content)
-            st.success("Files concatenated successfully!")
+            st.success("Traitement réalisé avec succès :)")
 
             with open(concatenated_file_path, 'rb') as f:
                 b64 = base64.b64encode(f.read()).decode()
-                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt">Download concatenated file</a>'
+                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt">Télécharger votre fichier</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
 if __name__ == "__main__":
