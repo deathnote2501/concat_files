@@ -38,8 +38,12 @@ def save_concatenated_file(content):
     return temp_file.name
 
 def main():
-    st.title("File Concatenation App")
-    uploaded_files = st.file_uploader("Upload files", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
+    st.title("Création base de connaissances GPTs")
+    st.subheader("Jérome IAvarone (jerome.iavarone@gmail.com)")
+    st.write("")
+    st.subheader("Chargez vos fichiers ci-dessous")
+
+    uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
     
     if st.button("Concatenate Files"):
         if not uploaded_files:
@@ -60,9 +64,9 @@ def main():
                 else:
                     file_content = ""
                 
-                all_content += f"--------------------------- begin {file_name} ---------------------------\n"
+                all_content += f"--------------------------- BEGIN {file_name} ---------------------------\n"
                 all_content += file_content
-                all_content += f"\n--------------------------- end {file_name} ---------------------------\n\n"
+                all_content += f"\n--------------------------- END {file_name} ---------------------------\n\n"
 
             concatenated_file_path = save_concatenated_file(all_content)
             st.success("Files concatenated successfully!")
