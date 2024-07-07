@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 from io import StringIO
-from PyPDF2 import PdfReader
+import pdfplumber
 from docx import Document
 from pptx import Presentation
 import tempfile
@@ -9,9 +9,9 @@ import base64
 
 def read_pdf(file):
     content = ""
-    pdf_reader = PdfReader(file)
-    for page in pdf_reader.pages:
-        content += page.extract_text()
+    with pdfplumber.open(file) as pdf:
+        for page in pdf.pages:
+            content += page.extract_text()
     return content
 
 def read_docx(file):
