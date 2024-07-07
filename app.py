@@ -8,7 +8,7 @@ import tempfile
 import base64
 
 # Define the password
-PASSWORD = "your_password_here"
+PASSWORD = "jeromeIA"
 
 def read_pdf(file):
     content = ""
@@ -45,7 +45,7 @@ def main():
     st.write("Par Jérome IAvarone")
 
     # Password input
-    password = st.text_input("Entrez le mot de passe :", type="jeromeIA")
+    password = st.text_input("Entrez le mot de passe :", type="password")
 
     if password == PASSWORD:
         st.write("")
