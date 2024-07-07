@@ -70,13 +70,13 @@ def main():
                 all_content += f"\n--------------------------- END {file_name} ---------------------------\n\n"
 
             concatenated_file_path = save_concatenated_file(all_content)
-            st.write("")
+            st.write("\n")
             st.success("Traitement réalisé avec succès :)")
-            st.write("")
+            st.write("\n")
 
             with open(concatenated_file_path, 'rb') as f:
                 b64 = base64.b64encode(f.read()).decode()
-                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt" style="font-size:20px;">Télécharger vos fichiers concaténés</a>'
+                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt" style="font-size:20px;">>> Télécharger sa base de connaissances</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
     st.write("")
