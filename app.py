@@ -1,63 +1,70 @@
 import streamlit as st
 import os
+from io import StringIO
+from PyPDF2 import PdfFileReader
 from docx import Document
-from PyPDF2 import PdfReader
 from pptx import Presentation
+import tempfile
+import base64
 
-def convert_pdf_to_txt(pdf_file):
-    reader = PdfReader(pdf_file)
-    text = ""
-    for page in reader.pages:
-        text += page.extract_text() + "\n"
-    return text
+def read_pdf(file):
+    content = ""
+    pdf_reader = PdfFileReader(file)
+    for page in range(pdf_reader.getNumPages()):
+        content += pdf_reader.getPage(page).extract_text()
+    return content
 
-def convert_docx_to_txt(docx_file):
-    doc = Document(docx_file)
-    text = ""
-    for para in doc.paragraphs:
-        text += para.text + "\n"
-    return text
+def read_docx(file):
+    doc = Document(file)
+    content = "\n".join([para.text for para in doc.paragraphs])
+    return content
 
-def convert_txt_to_txt(txt_file):
-    return txt_file.read().decode("utf-8")
+def read_txt(file):
+    return file.read().decode('utf-8')
 
-def convert_pptx_to_txt(pptx_file):
-    prs = Presentation(pptx_file)
-    text = ""
+def read_pptx(file):
+    prs = Presentation(file)
+    content = []
     for slide in prs.slides:
         for shape in slide.shapes:
             if hasattr(shape, "text"):
-                text += shape.text + "\n"
-    return text
+                content.append(shape.text)
+    return "\n".join(content)
 
-def concatenate_files(files):
-    concatenated_text = ""
-    for file in files:
-        if file.type == "application/pdf":
-            concatenated_text += convert_pdf_to_txt(file)
-        elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            concatenated_text += convert_docx_to_txt(file)
-        elif file.type == "text/plain":
-            concatenated_text += convert_txt_to_txt(file)
-        elif file.type == "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-            concatenated_text += convert_pptx_to_txt(file)
+def save_concatenated_file(content):
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+    with open(temp_file.name, 'w', encoding='utf-8') as f:
+        f.write(content)
+    return temp_file.name
+
+def main():
+    st.title("File Concatenation App")
+    uploaded_files = st.file_uploader("Upload files", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
+    
+    if st.button("Concatenate Files"):
+        if not uploaded_files:
+            st.warning("Please upload at least one file.")
         else:
-            st.error(f"Unsupported file type: {file.type}")
-    return concatenated_text
+            all_content = ""
+            for uploaded_file in uploaded_files:
+                file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+                if file_extension == ".pdf":
+                    all_content += read_pdf(uploaded_file)
+                elif file_extension in [".doc", ".docx"]:
+                    all_content += read_docx(uploaded_file)
+                elif file_extension == ".txt":
+                    all_content += read_txt(uploaded_file)
+                elif file_extension in [".ppt", ".pptx"]:
+                    all_content += read_pptx(uploaded_file)
+                all_content += "\n\n"
 
-st.title("File Concatenation Tool")
+            concatenated_file_path = save_concatenated_file(all_content)
+            st.success("Files concatenated successfully!")
 
-uploaded_files = st.file_uploader("Upload files", accept_multiple_files=True, type=['pdf', 'doc', 'docx', 'txt', 'ppt', 'pptx'])
+            with open(concatenated_file_path, 'rb') as f:
+                b64 = base64.b64encode(f.read()).decode()
+                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt">Download concatenated file</a>'
+                st.markdown(href, unsafe_allow_html=True)
 
-if st.button("Concatenate"):
-    if uploaded_files:
-        concatenated_text = concatenate_files(uploaded_files)
-        st.subheader("Concatenated Text")
-        st.text(concatenated_text)
-
-        with open("concatenated_output.txt", "w") as f:
-            f.write(concatenated_text)
-        
-        st.success("Files have been concatenated and saved to concatenated_output.txt")
-    else:
-        st.error("Please upload at least one file")
+if __name__ == "__main__":
+    main()
