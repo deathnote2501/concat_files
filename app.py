@@ -46,7 +46,7 @@ def main():
 
     uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
 
-    t.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
+    st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
     
     if st.button("Créer sa base de connaissances"):
         if not uploaded_files:
