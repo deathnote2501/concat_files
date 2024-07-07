@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import subprocess
 from docx import Document
 from PyPDF2 import PdfReader
 from pptx import Presentation
