@@ -6,8 +6,6 @@ from docx import Document
 from pptx import Presentation
 import tempfile
 import base64
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 
 def read_pdf(file):
     content = ""
@@ -34,10 +32,9 @@ def read_pptx(file):
     return "\n".join(content)
 
 def save_concatenated_file(content):
-    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
-    pdf_canvas = canvas.Canvas(temp_file.name, pagesize=letter)
-    pdf_canvas.drawString(30, 750, content)
-    pdf_canvas.save()
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt")
+    with open(temp_file.name, 'w', encoding='utf-8') as f:
+        f.write(content)
     return temp_file.name
 
 def main():
@@ -79,7 +76,7 @@ def main():
 
             with open(concatenated_file_path, 'rb') as f:
                 b64 = base64.b64encode(f.read()).decode()
-                href = f'<a href="data:file/pdf;base64,{b64}" download="concatenated_file.pdf" style="font-size:20px;">>> Télécharger sa base de connaissances</a>'
+                href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt" style="font-size:20px;">>> Télécharger sa base de connaissances</a>'
                 st.markdown(href, unsafe_allow_html=True)
 
     st.write("")
