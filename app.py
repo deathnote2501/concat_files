@@ -45,7 +45,7 @@ def main():
     st.write("Par Jérome IAvarone")
 
     # Password input
-    password = st.text_input("Entrez le mot de passe :", type="password")
+    password = st.text_input("Entrez le mot de passe :", type="jeromeIA")
 
     if password == PASSWORD:
         st.write("")
