@@ -55,7 +55,7 @@ def main():
         
         if st.button("Créer sa base de connaissances"):
             if not uploaded_files:
-                st.warning("Chargez au moins 2 fichiers.")
+                st.warning("Chargez au moins 1 fichier.")
             else:
                 all_content = ""
                 for uploaded_file in uploaded_files:
