@@ -47,16 +47,22 @@ def main():
         else:
             all_content = ""
             for uploaded_file in uploaded_files:
-                file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+                file_name = uploaded_file.name
+                file_extension = os.path.splitext(file_name)[1].lower()
                 if file_extension == ".pdf":
-                    all_content += read_pdf(uploaded_file)
+                    file_content = read_pdf(uploaded_file)
                 elif file_extension in [".doc", ".docx"]:
-                    all_content += read_docx(uploaded_file)
+                    file_content = read_docx(uploaded_file)
                 elif file_extension == ".txt":
-                    all_content += read_txt(uploaded_file)
+                    file_content = read_txt(uploaded_file)
                 elif file_extension in [".ppt", ".pptx"]:
-                    all_content += read_pptx(uploaded_file)
-                all_content += "\n\n"
+                    file_content = read_pptx(uploaded_file)
+                else:
+                    file_content = ""
+                
+                all_content += f"--------------------------- begin {file_name} ---------------------------\n"
+                all_content += file_content
+                all_content += f"\n--------------------------- end {file_name} ---------------------------\n\n"
 
             concatenated_file_path = save_concatenated_file(all_content)
             st.success("Files concatenated successfully!")
