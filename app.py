@@ -49,7 +49,11 @@ def main():
 
     if password == PASSWORD:
         st.write("")
-        st.subheader("Chargez vos fichiers :")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
+        st.subheader("Chargez vos fichiers ci-dessous :")
 
         uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
         
