@@ -8,7 +8,7 @@ import tempfile
 import base64
 
 # Define the password
-PASSWORD = "jeromeIA"
+PASSWORD = st.secrets["PASSWORD"]
 
 def read_pdf(file):
     try:
