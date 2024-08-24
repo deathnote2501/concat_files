@@ -61,26 +61,21 @@ def save_concatenated_file(content):
         return None
 
 def main():
+    # Affichage du titre, sous-titre, et image avant la demande de mot de passe
     st.markdown("<h1 style='text-align: center;'>Création base de connaissances pour les GPTs</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Par Jérome IAvarone - IAvaronce conseil</p>", unsafe_allow_html=True)
     st.write("")
-
     image_url = "https://www.iacademy-formation.com/wp-content/uploads/2024/08/iyus-sugiharto-jpkxJAcp6a4-unsplash-modified-1.png"
     st.image(image_url, use_column_width=True)
-
 
     # Password input
     password = st.text_input("Entrez le mot de passe :", type="password")
 
     if password == PASSWORD:
         st.write("")
-        st.write("")
-        st.write("")
-        st.write("")
-        st.write("")
         st.markdown("<h2 style='text-align: left;'>Chargez vos fichiers PDF</h2>", unsafe_allow_html=True)
 
-
+        # File uploader for multiple files
         uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
         
         if st.button("Créer sa base de connaissances"):
@@ -121,12 +116,14 @@ def main():
                         href = f'<a href="data:file/txt;base64,{b64}" download="concatenated_file.txt" style="font-size:20px;">>> Télécharger sa base de connaissances</a>'
                         st.markdown(href, unsafe_allow_html=True)
 
-        st.write("")
-        st.write("")
-        st.write("")
-        st.markdown("<p style='text-align: center;'>© 2024 Jérome IAvarone - jerome.iavarone@gmail.com</p>", unsafe_allow_html=True)
     elif password:
         st.error("Mot de passe incorrect")
+
+    # Affichage du pied de page
+    st.write("")
+    st.write("")
+    st.write("")
+    st.markdown("<p style='text-align: center;'>© 2024 Jérome IAvarone - jerome.iavarone@gmail.com</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
