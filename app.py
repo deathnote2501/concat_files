@@ -61,8 +61,13 @@ def save_concatenated_file(content):
         return None
 
 def main():
-    st.title("Création base de connaissances pour les GPTs")
-    st.write("Par Jérome IAvarone")
+    st.markdown("<h1 style='text-align: center;'>Création base de connaissances pour les GPTs</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>Par Jérome IAvarone - IAvaronce conseil</p>", unsafe_allow_html=True)
+    st.write("")
+
+    image_url = "https://www.iacademy-formation.com/wp-content/uploads/2024/08/iyus-sugiharto-jpkxJAcp6a4-unsplash-modified-1.png"
+    st.image(image_url, use_column_width=True)
+
 
     # Password input
     password = st.text_input("Entrez le mot de passe :", type="password")
@@ -73,7 +78,8 @@ def main():
         st.write("")
         st.write("")
         st.write("")
-        st.subheader("Chargez vos fichiers ci-dessous :")
+        st.markdown("<h2 style='text-align: left;'>Chargez vos fichiers PDF</h2>", unsafe_allow_html=True)
+
 
         uploaded_files = st.file_uploader("", type=["pdf", "doc", "docx", "txt", "ppt", "pptx"], accept_multiple_files=True)
         
@@ -118,7 +124,7 @@ def main():
         st.write("")
         st.write("")
         st.write("")
-        st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
+        st.markdown("<p style='text-align: center;'>© 2024 Jérome IAvarone - jerome.iavarone@gmail.com</p>", unsafe_allow_html=True)
     elif password:
         st.error("Mot de passe incorrect")
 
